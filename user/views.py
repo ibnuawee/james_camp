@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
-from .forms import UserForm
+from .forms import UserForm, UserEditForm
 
 User = get_user_model()
 
@@ -23,23 +23,25 @@ def user_create(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])  # Set password
+            user.save()
             return redirect('user_list')
     else:
         form = UserForm()
-    return render(request, 'user_form.html', {'form': form})
+    return render(request, 'user/add_user.html', {'form': form})
 
 @login_required
 def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
-        form = UserForm(request.POST, instance=user)
+        form = UserEditForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user_list')
     else:
-        form = UserForm(instance=user)
-    return render(request, 'user_form.html', {'form': form})
+        form = UserEditForm(instance=user)
+    return render(request, 'user/edit_user.html', {'form': form})
 
 @login_required
 def user_delete(request, pk):
