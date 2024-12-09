@@ -1,0 +1,87 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}User List{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h1>List User</h1>
+        <div class="section-header-button">
+            <a href="{% url 'user_create' %}" class="btn btn-primary">Add User</a>
+        </div>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="float-left"></div>
+                        <div class="float-right">
+                            <form method="GET">
+                                <div class="input-group">
+                                    <input name="search" type="text" class="form-control" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="clearfix mb-3"></div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                </tr>
+                                {% for user in users %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        {{ user.username }}
+                                        <div class="table-links">
+                                            <a href="{% url 'user_edit' user.id %}">Edit</a>
+                                            <div class="bullet"></div>
+                                            <form action="{% url 'user_delete' user.id %}" method="POST" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="text-danger">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.role }}</td>
+                                    <td>{{ user.is_active|yesno:"Active,Inactive" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6">No Data Found</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                        <div class="float-right">
+                            <nav>
+                                <ul class="pagination">
+                                    {% if users.has_previous %}
+                                    <li><a href="?page={{ users.previous_page_number }}">Previous</a></li>
+                                    {% endif %}
+                                    <li class="current">{{ users.number }} / {{ users.paginator.num_pages }}</li>
+                                    {% if users.has_next %}
+                                    <li><a href="?page={{ users.next_page_number }}">Next</a></li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
