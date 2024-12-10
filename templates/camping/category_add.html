@@ -1,0 +1,42 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tambah Kategori{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <div class="section-header-back">
+            <a href="{% url 'category_list' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <h1>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Kategori</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-sm-4">
+            <div class="col-12 col-md-12 col-lg-7">
+                <div class="card">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="name">Nama Kategori</label>
+                                    <input name="name" type="text" id="name" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" value="{{ form.name.value|default:'' }}">
+                                    {% for error in form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

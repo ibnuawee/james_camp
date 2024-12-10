@@ -21,7 +21,13 @@
             
         {% if user.is_admin %}
         <li class="nav-item dropdown">
-            <a href="{% url 'camping_item_list' %}" class="nav-link"><i class="fas fa-users"></i><span>List Item</span></a>
+            <a href="{% url 'camping_item_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Item</span></a>
+        </li>
+        {% endif %}
+            
+        {% if user.is_admin %}
+        <li class="nav-item dropdown">
+            <a href="{% url 'category_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Kategori</span></a>
         </li>
         {% endif %}
             
