@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Category, CampingItem
 from .forms import CategoryForm, CampingItemForm
+from django.http import JsonResponse
 
 # Helper function untuk staff/admin
 def is_staff_or_admin(user):
@@ -36,7 +37,7 @@ def camping_item_create(request):
             return redirect('camping_item_list')
     else:
         form = CampingItemForm()
-    return render(request, 'camping/camping_item_form.html', {'form': form})
+    return render(request, 'camping/new_item.html', {'form': form})
 
 # Edit alat camping
 @login_required
@@ -50,7 +51,7 @@ def camping_item_update(request, pk):
             return redirect('camping_item_list')
     else:
         form = CampingItemForm(instance=item)
-    return render(request, 'camping/camping_item_form.html', {'form': form})
+    return render(request, 'camping/new_item.html', {'form': form})
 
 # Hapus alat camping
 @login_required
@@ -59,8 +60,8 @@ def camping_item_delete(request, pk):
     item = get_object_or_404(CampingItem, pk=pk)
     if request.method == 'POST':
         item.delete()
-        return redirect('camping_item_list')
-    return render(request, 'camping/camping_item_confirm_delete.html', {'item': item})
+        return JsonResponse({'success': True, 'message': 'Item deleted successfully'})
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
 
 # Tambah kategori
 @login_required

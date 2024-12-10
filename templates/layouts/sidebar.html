@@ -18,6 +18,13 @@
             <a href="{% url 'user_list' %}" class="nav-link"><i class="fas fa-users"></i><span>User List</span></a>
         </li>
         {% endif %}
+            
+        {% if user.is_admin %}
+        <li class="nav-item dropdown">
+            <a href="{% url 'camping_item_list' %}" class="nav-link"><i class="fas fa-users"></i><span>List Item</span></a>
+        </li>
+        {% endif %}
+            
         {% endblock %}
     </ul>
 

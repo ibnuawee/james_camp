@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Tambah Alat Camping{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <div class="section-header-back">
+            <a href="{% url 'camping_item_list' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <h1>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Alat Camping</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-sm-4">
+            <div class="col-12 col-md-12 col-lg-7">
+                <div class="card">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="name">Nama Alat</label>
+                                    <input name="name" type="text" id="name" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" value="{{ form.name.value|default:'' }}">
+                                    {% for error in form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="category">Kategori</label>
+                                    <select name="category" id="category" class="form-select {{ form.category.errors|yesno:'is-invalid,' }}">
+                                        {% for category in form.fields.category.queryset %}
+                                            <option value="{{ category.id }}" {% if category.id == form.category.value %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% for error in form.category.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="price">Harga</label>
+                                    <input name="price" type="number" step="0.01" id="price" class="form-control {{ form.price.errors|yesno:'is-invalid,' }}" value="{{ form.price.value|default:'' }}">
+                                    {% for error in form.price.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="stock">Stok</label>
+                                    <input name="stock" type="number" id="stock" class="form-control {{ form.stock.errors|yesno:'is-invalid,' }}" value="{{ form.stock.value|default:'' }}">
+                                    {% for error in form.stock.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group col-md-6 col-12">
+                                    <label for="description">Deskripsi</label>
+                                    <textarea name="description" id="description" class="form-control {{ form.description.errors|yesno:'is-invalid,' }}">{{ form.description.value|default:'' }}</textarea>
+                                    {% for error in form.description.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
