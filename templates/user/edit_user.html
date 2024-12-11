@@ -42,16 +42,19 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <select name="role" id="role" class="form-select" required>
-                                    <option value="member">Member</option>
-                                    <option value="staff">Staff</option>
-                                </select>
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label for="role">Role</label>
+                                    <select name="role" id="role" class="form-control" required>
+                                        {% for value, label in form.role.field.choices %}
+                                            <option value="{{ value }}" {% if value == form.role.value %}selected{% endif %}>{{ label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="is_active">Active Status</label>
+                            <div class="form-check">
                                 <input name="is_active" type="checkbox" id="is_active" class="form-check-input" {{ form.is_active.value|yesno:"checked," }}>
+                                <label class="form-check-label" for="is_active">Active Status</label>
                             </div>
                         </div>
                         <div class="card-footer text-right">

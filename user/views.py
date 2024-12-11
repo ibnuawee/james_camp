@@ -34,6 +34,7 @@ def user_create(request):
 @login_required
 def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
+    # roles = Role.objects.all()
     if request.method == 'POST':
         form = UserEditForm(request.POST, instance=user)
         if form.is_valid():
