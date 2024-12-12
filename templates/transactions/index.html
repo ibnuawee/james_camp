@@ -3,36 +3,90 @@
 {% block title %}Daftar Transaksi{% endblock %}
 
 {% block content %}
-<h1>Daftar Transaksi</h1>
-<a href="{% url 'transaction_create' %}" class="btn btn-primary">Tambah Transaksi</a>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Invoice ID</th>
-            <th>Item</th>
-            <th>Jumlah</th>
-            <th>Total Harga</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for transaction in transactions %}
-        <tr>
-            <td>{{ transaction.invoice_id }}</td>
-            <td>{{ transaction.item.name }}</td>
-            <td>{{ transaction.quantity }}</td>
-            <td>{{ transaction.total_price }}</td>
-            <td>{{ transaction.get_status_display }}</td>
-            <td>
-                <a href="{% url 'transaction_update' transaction.id %}" class="btn btn-warning">Edit</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="6">Belum ada transaksi.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<section class="section">
+    <div class="section-header">
+        <h1>Daftar Transaksi</h1>
+        <div class="section-header-button">
+            <a href="{% url 'transaction_create' %}" class="btn btn-primary">Tambah Transaksi</a>
+        </div>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="float-left"></div>
+                        <div class="float-right">
+                            <form method="GET">
+                                <div class="input-group">
+                                    <input name="search" type="text" class="form-control" placeholder="Search">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="clearfix mb-3"></div>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Invoice ID</th>
+                                    <th>Nama Peminjam</th>
+                                    <th>Item</th>
+                                    <th>Jumlah</th>
+                                    <th>Total Harga</th>
+                                    <th>Tanggal Sewa</th>
+                                    <th>Catatan</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+
+                                </tr>
+                                {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ transaction.invoice_id }}</td>
+                                    <td>
+                                        {{ transaction.user.username }}
+                                    </td>
+                                    <td>{{ transaction.item.name }}</td>
+                                    <td>{{ transaction.quantity }}</td>
+                                    <td>{{ transaction.total_price }}</td>
+                                    <td>{{ transaction.rent_date|date:"d M Y" }}</td>
+                                    <td>{{ transaction.note }}</td>
+                                    <td>{{ transaction.get_status_display }}</td>
+                                    <td>
+                                        <a href="{% url 'transaction_update' transaction.id %}" class="btn btn-warning">Edit</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6">No Data Found</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                        <div class="float-right">
+                            <nav>
+                                <ul class="pagination">
+                                    {% if users.has_previous %}
+                                    <li><a href="?page={{ transactions.previous_page_number }}">Previous</a></li>
+                                    {% endif %}
+                                    <li class="current">{{ transactions.number }} / {{ transactions.paginator.num_pages }}</li>
+                                    {% if users.has_next %}
+                                    <li><a href="?page={{ transactions.next_page_number }}">Next</a></li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

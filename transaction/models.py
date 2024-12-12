@@ -19,6 +19,8 @@ class Transaction(models.Model):
     quantity = models.PositiveIntegerField()
     total_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    rent_date = models.DateField(null=True, blank=True)
+    note = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -29,6 +31,12 @@ class Transaction(models.Model):
         # Handle stock adjustments
         if self.pk:  # Check if the transaction already exists (update case)
             original = Transaction.objects.get(pk=self.pk)
+            if original.status == 'pending' and self.status in ['paid', 'processing']:
+                if self.quantity > self.item.stock:
+                    raise ValueError("Stok barang tidak mencukupi.")
+                self.item.stock -= self.quantity
+                self.item.save()
+
             if original.status == 'processing' and self.status == 'success':
                 # Return stock if transaction is marked as success
                 self.item.stock += self.quantity

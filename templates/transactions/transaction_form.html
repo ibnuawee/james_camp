@@ -3,10 +3,107 @@
 {% block title %}Form Transaksi{% endblock %}
 
 {% block content %}
-<h1>Form Transaksi</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Simpan</button>
-</form>
+<section class="section">
+    <div class="section-header">
+        <div class="section-header-back">
+            <a href="{% url 'transaction_list' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <h1>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Transaksi</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-sm-4">
+            <div class="col-12 col-md-12 col-lg-7">
+                <div class="card">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="card-body">
+
+                            <!-- Item -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="item">Item</label>
+                                    <select name="item" id="item" class="form-control {{ form.item.errors|yesno:'is-invalid,' }}">
+                                        {% for option in form.fields.item.queryset %}
+                                            <option value="{{ option.id }}" {% if option.id == form.item.value %}selected{% endif %}>
+                                                {{ option.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% for error in form.item.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Quantity -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="quantity">Jumlah</label>
+                                    <input name="quantity" type="number" id="quantity" class="form-control {{ form.quantity.errors|yesno:'is-invalid,' }}" value="{{ form.quantity.value|default:'' }}">
+                                    {% for error in form.quantity.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="status">Status</label>
+                                    <select name="status" id="status" class="form-control {{ form.status.errors|yesno:'is-invalid,' }}">
+                                        {% for value, label in form.fields.status.choices %}
+                                            <option value="{{ value }}" {% if value == form.status.value %}selected{% endif %}>
+                                                {{ label }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% for error in form.status.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Rent Date -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="rent_date">Tanggal Sewa</label>
+                                    <input name="rent_date" type="date" id="rent_date" class="form-control {{ form.rent_date.errors|yesno:'is-invalid,' }}" value="{{ form.rent_date.value|date:'Y-m-d'|default:''|default:'' }}">
+                                    {% for error in form.rent_date.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Note -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="note">Catatan</label>
+                                    <textarea name="note" id="note" class="form-control {{ form.note.errors|yesno:'is-invalid,' }}">{{ form.note.value|default:'' }}</textarea>
+                                    {% for error in form.note.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
