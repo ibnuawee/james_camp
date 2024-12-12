@@ -23,7 +23,8 @@
                             <div class="row">
                                 <div class="form-group col-12">
                                     <label for="item">Item</label>
-                                    <select name="item" id="item" class="form-control {{ form.item.errors|yesno:'is-invalid,' }}">
+                                    <select name="item" id="item" class="form-control select2 {{ form.item.errors|yesno:'is-invalid,' }}">
+                                        <option value="">Pilih Item</option>
                                         {% for option in form.fields.item.queryset %}
                                             <option value="{{ option.id }}" {% if option.id == form.item.value %}selected{% endif %}>
                                                 {{ option.name }}
@@ -106,4 +107,23 @@
         </div>
     </div>
 </section>
+
+<script>
+    $(document).ready(function() {
+        $('#item').select2({
+            placeholder: "Cari Item",
+            allowClear: true,
+            width: '100%'
+        });
+    });
+</script>
+    
+{% endblock %}
+
+{% block extra_css %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 {% endblock %}
