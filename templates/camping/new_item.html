@@ -15,7 +15,7 @@
         <div class="row mt-sm-4">
             <div class="col-12 col-md-12 col-lg-7">
                 <div class="card">
-                    <form method="post" class="needs-validation" novalidate>
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="row">
@@ -71,6 +71,18 @@
                                     <label for="description">Deskripsi</label>
                                     <textarea name="description" id="description" class="form-control {{ form.description.errors|yesno:'is-invalid,' }}">{{ form.description.value|default:'' }}</textarea>
                                     {% for error in form.description.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="image">Gambar</label>
+                                    <input name="image" type="file" id="image" class="form-control {{ form.image.errors|yesno:'is-invalid,' }}">
+                                    {% for error in form.image.errors %}
                                         <div class="invalid-feedback">
                                             {{ error }}
                                         </div>

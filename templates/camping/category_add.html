@@ -15,7 +15,7 @@
         <div class="row mt-sm-4">
             <div class="col-12 col-md-12 col-lg-7">
                 <div class="card">
-                    <form method="post" class="needs-validation" novalidate>
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <div class="card-body">
                             <div class="row">
@@ -23,6 +23,17 @@
                                     <label for="name">Nama Kategori</label>
                                     <input name="name" type="text" id="name" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" value="{{ form.name.value|default:'' }}">
                                     {% for error in form.name.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="image">Gambar</label>
+                                    <input name="image" type="file" id="image" class="form-control {{ form.image.errors|yesno:'is-invalid,' }}">
+                                    {% for error in form.image.errors %}
                                         <div class="invalid-feedback">
                                             {{ error }}
                                         </div>

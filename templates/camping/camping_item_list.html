@@ -39,6 +39,7 @@
                                     <th>Harga</th>
                                     <th>Stok</th>
                                     <th>Deskripsi</th>
+                                    <th>Gambar</th>
                                     <th>Aksi</th>
                                 </tr>
                                 {% for item in items %}
@@ -51,6 +52,13 @@
                                     <td>{{ item.price }}</td>
                                     <td>{{ item.stock }}</td>
                                     <td>{{ item.description }}</td>
+                                    <td>
+                                        {% if item.image %}
+                                        <img src="{{ item.image.url }}" alt="{{ item.name }}" width="100">
+                                        {% else %}
+                                        <span>Tidak ada gambar</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="{% url 'camping_item_update' item.pk %}" class="btn btn-warning">Edit</a>
                                         <button onclick="deleteItem({{ item.id }})" class="btn btn-danger">Delete</button>

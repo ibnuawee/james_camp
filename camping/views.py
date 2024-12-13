@@ -31,7 +31,7 @@ def camping_item_list(request):
 @user_passes_test(is_staff_or_admin)
 def camping_item_create(request):
     if request.method == 'POST':
-        form = CampingItemForm(request.POST)
+        form = CampingItemForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('camping_item_list')
@@ -45,7 +45,7 @@ def camping_item_create(request):
 def camping_item_update(request, pk):
     item = get_object_or_404(CampingItem, pk=pk)
     if request.method == 'POST':
-        form = CampingItemForm(request.POST, instance=item)
+        form = CampingItemForm(request.POST,request.FILES, instance=item)
         if form.is_valid():
             form.save()
             return redirect('camping_item_list')
@@ -74,7 +74,7 @@ def camping_category(request):
 @user_passes_test(is_staff_or_admin)
 def category_create(request):
     if request.method == 'POST':
-        form = CategoryForm(request.POST)
+        form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('category_list')
@@ -87,7 +87,7 @@ def category_create(request):
 def category_item_update(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
-        form = CategoryForm(request.POST, instance=category)
+        form = CategoryForm(request.POST,request.FILES, instance=category)
         if form.is_valid():
             form.save()
             return redirect('category_list')
