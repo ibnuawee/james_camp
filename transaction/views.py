@@ -11,7 +11,7 @@ def transaction_list(request):
 @login_required
 def transaction_create(request):
     if request.method == 'POST':
-        form = TransactionForm(request.POST)
+        form = TransactionForm(request.POST, request.FILES)
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.user = request.user
@@ -25,7 +25,7 @@ def transaction_create(request):
 def transaction_update(request, pk):
     transaction = get_object_or_404(Transaction, pk=pk)
     if request.method == 'POST':
-        form = TransactionForm(request.POST, instance=transaction)
+        form = TransactionForm(request.POST, request.FILES, instance=transaction)
         if form.is_valid():
             form.save()
             return redirect('transaction_list')

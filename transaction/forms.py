@@ -5,9 +5,10 @@ from .models import Transaction
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ['item', 'quantity', 'status', 'rent_date', 'note']
+        fields = ['item', 'quantity', 'status', 'rent_date', 'return_date', 'identity_photo','payment_method', 'note']
         widgets = {
             'rent_date': forms.DateInput(attrs={'type': 'date'}),
+            'return_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
     def clean_quantity(self):

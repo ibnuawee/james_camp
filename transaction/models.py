@@ -4,6 +4,14 @@ import uuid
 
 User = get_user_model()
 
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=100, unique=True)  # Nama metode pembayaran
+    description = models.TextField(blank=True, null=True)  # Deskripsi metode pembayaran
+    is_active = models.BooleanField(default=True)  # Hanya metode pembayaran aktif yang dapat digunakan
+
+    def __str__(self):
+        return self.name
+
 class Transaction(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending'),
@@ -20,13 +28,21 @@ class Transaction(models.Model):
     total_price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     rent_date = models.DateField(null=True, blank=True)
+    return_date = models.DateField(null=True, blank=True)
+    identity_photo = models.ImageField(upload_to='identity_photos/', blank=True, null=True)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
     note = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        # Hitung total harga berdasarkan jumlah dan harga per item
-        self.total_price = self.quantity * self.item.price
+        if self.rent_date and self.return_date:
+            days_rented = (self.return_date - self.rent_date).days
+        else:
+            days_rented = 1  # Default ke 1 hari jika salah satu tanggal tidak ada
+
+            # Hitung total harga berdasarkan jumlah barang, harga per item, dan jumlah hari
+        self.total_price = self.quantity * self.item.price * days_rented
 
         # Handle stock adjustments
         if self.pk:  # Check if the transaction already exists (update case)

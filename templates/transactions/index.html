@@ -42,6 +42,7 @@
                                     <th>Tanggal Sewa</th>
                                     <th>Catatan</th>
                                     <th>Status</th>
+                                    <th>Metode Pembayaran</th>
                                     <th>Aksi</th>
 
                                 </tr>
@@ -58,6 +59,7 @@
                                     <td>{{ transaction.rent_date|date:"d M Y" }}</td>
                                     <td>{{ transaction.note }}</td>
                                     <td>{{ transaction.get_status_display }}</td>
+                                    <td>{{ transaction.payment_method.name }}</td>
                                     <td>
                                         <a href="{% url 'transaction_update' transaction.id %}" class="btn btn-warning">Edit</a>
                                     </td>
