@@ -4,12 +4,16 @@ from camping.models import CampingItem, Category
 from transaction.models import Transaction
 from .forms import UserTransactionForm
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 @login_required
 def member_transaction_list(request):
-    """Menampilkan daftar transaksi milik user yang sedang login"""
-    transactions = Transaction.objects.filter(user=request.user).order_by('-created_at')  # Urutkan berdasarkan waktu terbaru
-    return render(request, 'member_transactions/member_transaction_list.html', {'transactions': transactions})
+    transactions = Transaction.objects.filter(user=request.user).order_by('-created_at')
+    paginator = Paginator(transactions, 5)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'member_transactions/member_transaction_list.html', {'page_obj': page_obj})
 
 @login_required
 def member_transaction_categories(request):

@@ -1,34 +1,39 @@
 <div class="container">
-    <a class="navbar-brand" href="#">Car<span>Book</span></a>
+    <a class="navbar-brand" href="{% url 'home' %}">james<span>Camp</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="oi oi-menu"></span> Menu
     </button>
 
     <div class="collapse navbar-collapse" id="ftco-nav">
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
-      <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-      <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-      <li class="nav-item"><a href="pricing.html" class="nav-link">Pricing</a></li>
-      <li class="nav-item"><a href="{% url 'member_transaction_categories' %}" class="nav-link">Transaksi</a></li>
-      <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle" id="blogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Hi, {{ user.username }}
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="blogDropdown">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="{% url 'member_transaction_list' %}">My Transactions</a></li>
-            <li>
-                <form id="logout-form" action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                    <a href="#" class="dropdown-item has-icon text-danger" 
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-                </form>
-            </li>
-        </ul>
-      </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+            <a href="{% url 'home' %}" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'price' %}active{% endif %}">
+            <a href="{% url 'price' %}" class="nav-link">Pricing</a>
+        </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'member_transaction_categories' %}active{% endif %}">
+            <a href="{% url 'member_transaction_categories' %}" class="nav-link">Transaksi</a>
+        </li>
+        <li class="nav-item dropdown {% if request.resolver_match.url_name == 'member_transaction_list' %}active{% endif %}">
+            <a href="#" class="nav-link dropdown-toggle" id="blogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Hi, {{ user.username }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="blogDropdown">
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item {% if request.resolver_match.url_name == 'member_transaction_list' %}active{% endif %}" href="{% url 'member_transaction_list' %}">My Transactions</a></li>
+                <li>
+                    <form id="logout-form" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                        <a href="#" class="dropdown-item has-icon text-danger"
+                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </li>
     </ul>
+
     </div>
 </div>
