@@ -18,7 +18,7 @@ def staff_dashboard(request):
 
 @login_required
 def member_dashboard(request):
-    return render(request, 'layouts/member_dashboard.html')
+    return render(request, 'landingpage/home.html')
 
 # List semua alat camping
 @login_required

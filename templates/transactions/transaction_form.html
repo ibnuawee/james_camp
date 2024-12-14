@@ -87,7 +87,7 @@
                             <!-- Return Date -->
                             <div class="form-group">
                                 <label for="return_date">Tanggal Pengembalian</label>
-                                <input name="return_date" type="date" id="return_date" class="form-control {{ form.return_date.errors|yesno:'is-invalid,' }}" value="{{ form.return_date.value|default:'' }}">
+                                <input name="return_date" type="date" id="return_date" class="form-control {{ form.return_date.errors|yesno:'is-invalid,' }}" value="{{ form.return_date.value|date:'Y-m-d'|default:''|default:'' }}">
                                 {% for error in form.return_date.errors %}
                                     <div class="invalid-feedback">
                                         {{ error }}

@@ -1,0 +1,102 @@
+{% extends "layouts2/base.html" %}
+
+{% block title %}Form Transaksi{% endblock %}
+
+{% block content %}
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/static/assets2/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+      <div class="col-md-9 ftco-animate pb-5">
+        <p class="breadcrumbs">
+          <span class="mr-2">
+            <a href="{% url 'member_dashboard' %}">Home <i class="ion-ios-arrow-forward"></i></a>
+          </span>
+          <span class="mr-2">
+            <a href="{% url 'member_transaction_categories' %}">Kategori <i class="ion-ios-arrow-forward"></i></a>
+          </span>
+          <span class="mr-2">
+            <a href="{% url 'member_transaction_items' item.category.id %}">{{ item.category.name }} <i class="ion-ios-arrow-forward"></i></a>
+          </span>
+          <span>{{ item.name }} <i class="ion-ios-arrow-forward"></i></span>
+        </p>
+        <h1 class="mb-3 bread">Transaksi untuk {{ item.name }}</h1>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ftco-section bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <img src="{{ item.image.url|default:'images/default-item.jpg' }}" alt="{{ item.name }}" class="img-fluid">
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="card-body">
+              <div class="form-group">
+                <label for="quantity">Jumlah</label>
+                <input type="number" name="quantity" id="quantity" class="form-control {{ form.quantity.errors|yesno:'is-invalid,' }}" value="{{ form.quantity.value|default:'' }}">
+                {% for error in form.quantity.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+                {% endfor %}
+              </div>
+              <div class="form-group">
+                <label for="rent_date">Tanggal Sewa</label>
+                <input type="date" name="rent_date" id="rent_date" class="form-control {{ form.rent_date.errors|yesno:'is-invalid,' }}" value="{{ form.rent_date.value|default:'' }}">
+                {% for error in form.rent_date.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+                {% endfor %}
+              </div>
+              <div class="form-group">
+                <label for="return_date">Tanggal Pengembalian</label>
+                <input type="date" name="return_date" id="return_date" class="form-control {{ form.return_date.errors|yesno:'is-invalid,' }}" value="{{ form.return_date.value|default:'' }}">
+                {% for error in form.return_date.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+                {% endfor %}
+              </div>
+              <div class="form-group">
+                <label for="identity_photo">Foto Identitas</label>
+                <input type="file" name="identity_photo" id="identity_photo" class="form-control {{ form.identity_photo.errors|yesno:'is-invalid,' }}">
+                {% for error in form.identity_photo.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+                {% endfor %}
+              </div>
+            <div class="form-group">
+                <label for="payment_method">Metode Pembayaran</label>
+                <select name="payment_method" id="payment_method" class="form-control {{ form.payment_method.errors|yesno:'is-invalid,' }}">
+                  {% for method in form.fields.payment_method.queryset %}
+                  <option value="{{ method.id }}" {% if method.id == form.payment_method.value %}selected{% endif %}>
+                    {{ method.name }}
+                  </option>
+                  {% endfor %}
+                </select>
+                {% for error in form.payment_method.errors %}
+                <div class="invalid-feedback">
+                  {{ error }}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -26,10 +26,11 @@ urlpatterns = [
 
     path('camping/', include('camping.urls')),
 
-    # path('home/', include('camping.urls')),
+    path('', include('landingpage.urls')),
 
     path('user/', include('user.urls')),
 
     path('transactions/', include('transaction.urls')),
+    path('member/', include('user_transactions.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

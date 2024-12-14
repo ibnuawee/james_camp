@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from camping.models import CampingItem, Category
 from .models import Transaction, PaymentMethod
 from .forms import TransactionForm, PaymentMethodForm
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -29,12 +31,12 @@ def transaction_create(request):
 def transaction_update(request, pk):
     transaction = get_object_or_404(Transaction, pk=pk)
     if request.method == 'POST':
-        form = TransactionForm(request.POST, request.FILES, instance=transaction)
+        form = TransactionForm(request.POST, request.FILES, instance=transaction,item=transaction.item)
         if form.is_valid():
             form.save()
             return redirect('transaction_list')
     else:
-        form = TransactionForm(instance=transaction)
+        form = TransactionForm(instance=transaction, item=transaction.item)
     return render(request, 'transactions/transaction_form.html', {'form': form})
 
 @login_required()
