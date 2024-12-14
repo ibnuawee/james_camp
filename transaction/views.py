@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Transaction
-from .forms import TransactionForm
-from django.contrib.auth.decorators import login_required
+from .models import Transaction, PaymentMethod
+from .forms import TransactionForm, PaymentMethodForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import JsonResponse
+
+def is_staff_or_admin(user):
+    return user.is_staff or user.is_admin()
 
 @login_required
 def transaction_list(request):
@@ -32,3 +36,40 @@ def transaction_update(request, pk):
     else:
         form = TransactionForm(instance=transaction)
     return render(request, 'transactions/transaction_form.html', {'form': form})
+
+@login_required()
+def payment_method_list(request):
+    methods = PaymentMethod.objects.all()
+    return render(request, 'payment/index.html', {'methods': methods})
+
+@login_required()
+def payment_method_create(request):
+    if request.method == 'POST':
+        form = PaymentMethodForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_method_list')
+    else:
+        form = PaymentMethodForm()
+    return render(request, 'payment/payment_method_form.html', {'form': form})
+
+@login_required()
+def payment_method_update(request, pk):
+    method = get_object_or_404(PaymentMethod, pk=pk)
+    if request.method == 'POST':
+        form = PaymentMethodForm(request.POST, instance=method)
+        if form.is_valid():
+            form.save()
+            return redirect('payment_method_list')
+    else:
+        form = PaymentMethodForm(instance=method)
+    return render(request, 'payment/payment_method_form.html', {'form': form})
+
+@login_required()
+@user_passes_test(is_staff_or_admin)
+def payment_method_delete(request, pk):
+    method = get_object_or_404(PaymentMethod, pk=pk)
+    if request.method == 'POST':
+        method.delete()
+        return JsonResponse({'success': True, 'message': 'Payment deleted successfully'})
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)

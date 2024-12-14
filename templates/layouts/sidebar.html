@@ -36,7 +36,13 @@
             <a href="{% url 'transaction_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Transaksi</span></a>
         </li>
         {% endif %}
-            
+
+        {% if user.is_admin %}
+        <li class="nav-item dropdown">
+            <a href="{% url 'payment_method_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Pembayaran</span></a>
+        </li>
+        {% endif %}
+
         {% endblock %}
     </ul>
 

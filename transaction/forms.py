@@ -1,5 +1,5 @@
 from django import forms
-from .models import Transaction
+from .models import Transaction, PaymentMethod
 
 
 class TransactionForm(forms.ModelForm):
@@ -17,3 +17,8 @@ class TransactionForm(forms.ModelForm):
         if quantity > item.stock:
             raise forms.ValidationError(f"Stok tidak mencukupi. Hanya tersedia {item.stock}.")
         return quantity
+
+class PaymentMethodForm(forms.ModelForm):
+    class Meta:
+        model = PaymentMethod
+        fields = ['name', 'description', 'is_active']
