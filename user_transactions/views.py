@@ -5,6 +5,7 @@ from transaction.models import Transaction
 from .forms import UserTransactionForm
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.urls import reverse
 
 @login_required
 def member_transaction_list(request):
@@ -35,24 +36,23 @@ def member_transaction_form(request, item_id):
     item = get_object_or_404(CampingItem, pk=item_id)
     if request.method == 'POST':
         print("POST data:", request.POST)
-        form = UserTransactionForm(request.POST, request.FILES, item=item)  # Tambahkan item
+        form = UserTransactionForm(request.POST, request.FILES, item=item)
         if form.is_valid():
             print("Form valid. Data siap disimpan.")
             transaction = form.save(commit=False)
-            transaction.user = request.user  # Tetapkan user yang sedang login
-            transaction.item = item  # Tetapkan item yang dipilih
+            transaction.user = request.user
+            transaction.item = item
             if not transaction.status:
                 transaction.status = 'pending'
             transaction.save()
-            return redirect('transaction_list')  # Redirect ke kategori
+            return redirect(reverse('member_transaction_detail', kwargs={'transaction_id': transaction.id}))
         else:
-            print("Form errors:", form.errors)  # Debugging error form
+            print("Form errors:", form.errors)
     else:
         form = UserTransactionForm(item=item)
     return render(request, 'member_transactions/member_transaction_form.html', {'item': item, 'form': form})
 
 @login_required
 def member_transaction_detail(request, transaction_id):
-    """Menampilkan detail transaksi untuk member"""
     transaction = get_object_or_404(Transaction, pk=transaction_id, user=request.user)
     return render(request, 'member_transactions/member_transaction_detail.html', {'transaction': transaction})

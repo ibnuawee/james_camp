@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'transaction',
     'landingpage',
     'user_transactions',
+    'content',
+    'blog',
 ]
 
 MIDDLEWARE = [

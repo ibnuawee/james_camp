@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load custom_filters %}
 
 {% block title %}List Alat Camping{% endblock %}
 
@@ -16,7 +17,12 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="float-left"></div>
+                        <div class="float-left">
+                            <div class="mb-3">
+                                <a href="?order_by=asc&search={{ request.GET.search }}" class="btn btn-primary">Sort Ascending</a>
+                                <a href="?order_by=desc&search={{ request.GET.search }}" class="btn btn-secondary">Sort Descending</a>
+                            </div>
+                        </div>
                         <div class="float-right">
                             <form method="GET">
                                 <div class="input-group">
@@ -44,12 +50,12 @@
                                 </tr>
                                 {% for item in items %}
                                 <tr id="item-{{ item.id }}">
-                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ forloop.counter|add:items.start_index|add:"-1" }}</td>
                                     <td>
                                         {{ item.name }}
                                     </td>
                                     <td>{{ item.category }}</td>
-                                    <td>{{ item.price }}</td>
+                                    <td>{{ item.price|rupiah     }}</td>
                                     <td>{{ item.stock }}</td>
                                     <td>{{ item.description }}</td>
                                     <td>
@@ -76,12 +82,12 @@
                         <div class="float-right">
                             <nav>
                                 <ul class="pagination">
-                                    {% if users.has_previous %}
-                                    <li><a href="?page={{ users.previous_page_number }}">Previous</a></li>
+                                    {% if items.has_previous %}
+                                    <li><a href="?page={{ items.previous_page_number }}">Previous</a></li>
                                     {% endif %}
-                                    <li class="current">{{ users.number }} / {{ users.paginator.num_pages }}</li>
-                                    {% if users.has_next %}
-                                    <li><a href="?page={{ users.next_page_number }}">Next</a></li>
+                                    <li class="current">{{ items.number }} / {{ items.paginator.num_pages }}</li>
+                                    {% if items.has_next %}
+                                    <li><a href="?page={{ items.next_page_number }}">Next</a></li>
                                     {% endif %}
                                 </ul>
                             </nav>

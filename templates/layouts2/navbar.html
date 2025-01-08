@@ -15,24 +15,46 @@
         <li class="nav-item {% if request.resolver_match.url_name == 'member_transaction_categories' %}active{% endif %}">
             <a href="{% url 'member_transaction_categories' %}" class="nav-link">Transaksi</a>
         </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+            <a href="{% url 'about' %}" class="nav-link">About</a>
+        </li>
+        <li class="nav-item {% if request.resolver_match.url_name == 'list_blog' %}active{% endif %}">
+            <a href="{% url 'list_blog' %}" class="nav-link">Blog</a>
+        </li>
+        {% if user.is_authenticated %}
         <li class="nav-item dropdown {% if request.resolver_match.url_name == 'member_transaction_list' %}active{% endif %}">
-            <a href="#" class="nav-link dropdown-toggle" id="blogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="#" class="nav-link dropdown-toggle" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Hi, {{ user.username }}
             </a>
-            <ul class="dropdown-menu" aria-labelledby="blogDropdown">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><a class="dropdown-item {% if request.resolver_match.url_name == 'member_transaction_list' %}active{% endif %}" href="{% url 'member_transaction_list' %}">My Transactions</a></li>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
                 <li>
-                    <form id="logout-form" action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                        <a href="#" class="dropdown-item has-icon text-danger"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
+                    <a class="dropdown-item {% if request.resolver_match.url_name == 'profile' %}active{% endif %}" 
+                       href="{% url 'profile' %}">
+                        My Profile
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item {% if request.resolver_match.url_name == 'member_transaction_list' %}active{% endif %}" 
+                       href="{% url 'member_transaction_list' %}">
+                        My Transactions
+                    </a>
+                </li>
+                <li>
+                    <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                        {% csrf_token %}
                     </form>
+                    <a href="#" class="dropdown-item has-icon text-danger"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </li>
             </ul>
         </li>
+        {% else %}
+        <li class="nav-item {% if request.resolver_match.url_name == 'login' %}active{% endif %}">
+            <a href="{% url 'login' %}" class="nav-link">Login</a>
+        </li>
+        {% endif %}
     </ul>
 
     </div>

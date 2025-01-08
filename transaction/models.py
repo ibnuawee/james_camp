@@ -39,13 +39,11 @@ class Transaction(models.Model):
         if self.rent_date and self.return_date:
             days_rented = (self.return_date - self.rent_date).days
         else:
-            days_rented = 1  # Default ke 1 hari jika salah satu tanggal tidak ada
+            days_rented = 1
 
-            # Hitung total harga berdasarkan jumlah barang, harga per item, dan jumlah hari
         self.total_price = self.quantity * self.item.price * days_rented
 
-        # Handle stock adjustments
-        if self.pk:  # Check if the transaction already exists (update case)
+        if self.pk:
             original = Transaction.objects.get(pk=self.pk)
             if original.status == 'pending' and self.status in ['paid', 'processing']:
                 if self.quantity > self.item.stock:
@@ -54,12 +52,12 @@ class Transaction(models.Model):
                 self.item.save()
 
             if original.status == 'processing' and self.status == 'success':
-                # Return stock if transaction is marked as success
                 self.item.stock += self.quantity
                 self.item.save()
-        else:  # New transaction
+        else:
             if self.status in ['processing', 'paid']:
-                # Decrease stock on new transaction
+                if self.quantity > self.item.stock:
+                    raise ValueError("Stok barang tidak mencukupi.")
                 self.item.stock -= self.quantity
                 self.item.save()
         super().save(*args, **kwargs)

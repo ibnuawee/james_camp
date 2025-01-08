@@ -1,0 +1,118 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Edit About Content{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h1>Edit Konten Halaman About</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-sm-4">
+            <div class="col-12 col-md-12 col-lg-7">
+                <div class="card">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <!-- Alamat -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_address">Alamat</label>
+                                    <input name="address" type="text" id="id_address" class="form-control {{ form.address.errors|yesno:'is-invalid,' }}" value="{{ form.address.value|default:'' }}">
+                                    {% for error in form.address.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Telepon -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_phone">Nomor Telepon</label>
+                                    <input name="phone" type="text" id="id_phone" class="form-control {{ form.phone.errors|yesno:'is-invalid,' }}" value="{{ form.phone.value|default:'' }}">
+                                    {% for error in form.phone.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_email">Email</label>
+                                    <input name="email" type="email" id="id_email" class="form-control {{ form.email.errors|yesno:'is-invalid,' }}" value="{{ form.email.value|default:'' }}">
+                                    {% for error in form.email.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Heading -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_heading">Judul Halaman</label>
+                                    <input name="heading" type="text" id="id_heading" class="form-control {{ form.heading.errors|yesno:'is-invalid,' }}" value="{{ form.heading.value|default:'' }}">
+                                    {% for error in form.heading.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Deskripsi -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_description">Deskripsi</label>
+                                    <textarea name="description" id="id_description" class="form-control {{ form.description.errors|yesno:'is-invalid,' }}" rows="5">{{ form.description.value|default:'' }}</textarea>
+                                    {% for error in form.description.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Link Text -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_link_text">Teks Link</label>
+                                    <input name="link_text" type="text" id="id_link_text" class="form-control {{ form.link_text.errors|yesno:'is-invalid,' }}" value="{{ form.link_text.value|default:'' }}">
+                                    {% for error in form.link_text.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Link URL -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_link_url">URL Link</label>
+                                    <input name="link_url" type="url" id="id_link_url" class="form-control {{ form.link_url.errors|yesno:'is-invalid,' }}" value="{{ form.link_url.value|default:'' }}">
+                                    {% for error in form.link_url.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

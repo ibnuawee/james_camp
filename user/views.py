@@ -1,24 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from .forms import UserForm, UserEditForm
 
 User = get_user_model()
 
+def is_admin(user):
+    return user.is_admin()
+
 @login_required
+@user_passes_test(is_admin)
 def user_list(request):
     search_query = request.GET.get('search', '')
     users = User.objects.filter(username__icontains=search_query).order_by('id')
 
-    # Paginator setup
-    paginator = Paginator(users, 10)  # 10 users per page
+    paginator = Paginator(users, 10)
     page_number = request.GET.get('page')
     users_page = paginator.get_page(page_number)
 
     return render(request, 'user/index.html', {'users': users_page})
 
 @login_required
+@user_passes_test(is_admin)
 def user_create(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
@@ -32,6 +36,7 @@ def user_create(request):
     return render(request, 'user/add_user.html', {'form': form})
 
 @login_required
+@user_passes_test(is_admin)
 def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
     # roles = Role.objects.all()
@@ -45,6 +50,7 @@ def user_edit(request, pk):
     return render(request, 'user/edit_user.html', {'form': form})
 
 @login_required
+@user_passes_test(is_admin)
 def user_delete(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':

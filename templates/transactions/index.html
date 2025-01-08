@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load custom_filters %}
 
 {% block title %}Daftar Transaksi{% endblock %}
 
@@ -16,7 +17,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="float-left"></div>
+                        <div class="float-left">
+                            <a href="{% url 'export_transactions_csv' %}" class="btn btn-primary">Export Transactions to CSV</a>
+                            <form method="GET" action="" class="form-inline mb-3">
+                                <input type="date" name="start_date" class="form-control mr-2" placeholder="Start Date" value="{{ request.GET.start_date }}">
+                                <input type="date" name="end_date" class="form-control mr-2" placeholder="End Date" value="{{ request.GET.end_date }}">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </form>
+                        </div>
                         <div class="float-right">
                             <form method="GET">
                                 <div class="input-group">
@@ -35,33 +43,46 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Invoice ID</th>
-                                    <th>Nama Peminjam</th>
+                                    <th>Nama</th>
+                                    <th>Identitas</th>
                                     <th>Item</th>
                                     <th>Jumlah</th>
-                                    <th>Total Harga</th>
                                     <th>Tanggal Sewa</th>
                                     <th>Tanggal Pengembalian</th>
-                                    <th>Catatan</th>
-                                    <th>Status</th>
                                     <th>Metode Pembayaran</th>
+                                    <th>Catatan</th>
+                                    <th>Total Harga</th>
+                                    <th>Status</th>
+
                                     <th>Aksi</th>
 
                                 </tr>
                                 {% for transaction in transactions %}
                                 <tr>
-                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ forloop.counter|add:transactions.start_index|add:"-1"  }}</td>
                                     <td>{{ transaction.invoice_id }}</td>
                                     <td>
                                         {{ transaction.user.username }}
                                     </td>
+                                    <td>
+                                        {% if transaction.identity_photo %}
+                                            <a href="{{ transaction.identity_photo.url }}" target="_blank">
+                                                <img src="{{ transaction.identity_photo.url }}" alt="Identity Photo" style="max-width: 100px; max-height: 100px;">
+                                            </a>
+                                        {% else %}
+                                            <span>No photo</span>
+                                        {% endif %}
+                                    </td>
                                     <td>{{ transaction.item.name }}</td>
                                     <td>{{ transaction.quantity }}</td>
-                                    <td>{{ transaction.total_price }}</td>
+
                                     <td>{{ transaction.rent_date|date:"d M Y" }}</td>
                                     <td>{{ transaction.return_date|date:"d M Y" }}</td>
-                                    <td>{{ transaction.note }}</td>
-                                    <td>{{ transaction.get_status_display }}</td>
                                     <td>{{ transaction.payment_method.name }}</td>
+                                    <td>{{ transaction.note }}</td>
+                                    <td>{{ transaction.total_price|rupiah }}</td>
+                                    <td>{{ transaction.get_status_display }}</td>
+
                                     <td>
                                         <a href="{% url 'transaction_update' transaction.id %}" class="btn btn-warning">Edit</a>
                                     </td>
@@ -77,11 +98,11 @@
                         <div class="float-right">
                             <nav>
                                 <ul class="pagination">
-                                    {% if users.has_previous %}
+                                    {% if transactions.has_previous %}
                                     <li><a href="?page={{ transactions.previous_page_number }}">Previous</a></li>
                                     {% endif %}
                                     <li class="current">{{ transactions.number }} / {{ transactions.paginator.num_pages }}</li>
-                                    {% if users.has_next %}
+                                    {% if transactions.has_next %}
                                     <li><a href="?page={{ transactions.next_page_number }}">Next</a></li>
                                     {% endif %}
                                 </ul>

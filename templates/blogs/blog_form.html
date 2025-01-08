@@ -1,0 +1,106 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}{{ view.action|default:"Tambah" }} Blog{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <div class="section-header-back">
+            <a href="{% url 'blog_list' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <h1>{% if form.instance.pk %}Edit{% else %}Tambah{% endif %} Blog</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-sm-4">
+            <div class="col-12 col-md-12 col-lg-7">
+                <div class="card">
+                    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="card-body">
+                            <!-- Judul -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_title">Judul</label>
+                                    <input name="title" type="text" id="id_title" class="form-control {{ form.title.errors|yesno:'is-invalid,' }}" value="{{ form.title.value|default:'' }}">
+                                    {% for error in form.title.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Kategori -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_category">Kategori</label>
+                                    <select name="category" id="id_category" class="form-control {{ form.category.errors|yesno:'is-invalid,' }}">
+                                        <option value="">Pilih Kategori</option>
+                                        {% for category in form.fields.category.queryset %}
+                                            <option value="{{ category.id }}" {% if category.id == form.category.value %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% for error in form.category.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Sinopsis -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_synopsis">Sinopsis</label>
+                                    <textarea name="synopsis" id="id_synopsis" class="form-control {{ form.synopsis.errors|yesno:'is-invalid,' }}" rows="3">{{ form.synopsis.value|default:'' }}</textarea>
+                                    {% for error in form.synopsis.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Konten -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_content">Konten</label>
+                                    <textarea name="content" id="id_content" class="form-control {{ form.content.errors|yesno:'is-invalid,' }}" rows="5">{{ form.content.value|default:'' }}</textarea>
+                                    {% for error in form.content.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Gambar -->
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="id_image">Gambar</label>
+                                    <input name="image" type="file" id="id_image" class="form-control {{ form.image.errors|yesno:'is-invalid,' }}">
+                                    {% for error in form.image.errors %}
+                                        <div class="invalid-feedback">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                    {% if form.instance.image %}
+                                        <small class="form-text text-muted">Gambar saat ini: {{ form.instance.image.name }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">Simpan</button>
+                            <a href="{% url 'blog_list' %}" class="btn btn-secondary">Batal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

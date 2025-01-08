@@ -1,0 +1,68 @@
+{% extends "layouts2/base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+    <section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/static/assets2/images/pemandangan2.jpeg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
+          <div class="col-md-9 ftco-animate pb-5">
+            <p class="breadcrumbs">
+              <span class="mr-2"><a href="{% url 'home' %}">Home <i class="ion-ios-arrow-forward"></i></a></span>
+              <span>Profile <i class="ion-ios-arrow-forward"></i></span>
+            </p>
+            <h1 class="mb-3 bread">Profile Saya</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="ftco-section ftco-no-pt bg-light">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-md-12 featured-top">
+                <div class="row no-gutters">
+                    <!-- Update Profile Form -->
+                    <div class="col-md-4 align-items-center">
+                        <form method="post" class="request-form ftco-animate bg-primary">
+                            {% csrf_token %}
+                            <h2>Update Profile</h2>
+                            <div class="form-group">
+                                <label for="first_name" class="label">First Name</label>
+                                <input type="text" id="first_name" name="first_name" class="form-control" value="{{ form.first_name.value|default:user.first_name }}" placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name" class="label">Last Name</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control" value="{{ form.last_name.value|default:user.last_name }}" placeholder="Last Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="username" class="label">Username</label>
+                                <input type="text" id="username" name="username" class="form-control" value="{{ form.username.value|default:user.username }}" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="label">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" value="{{ form.email.value|default:user.email }}" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Update Profile" class="btn btn-secondary py-3 px-4">
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Profile Details -->
+                    <div class="col-md-8 d-flex align-items-center">
+                        <div class="services-wrap rounded-right w-100">
+                            <h3 class="heading-section mb-4">Profile Saya</h3>
+                            <h2>Halo, Selamat Datang {{ user.username }}</h2>
+                            <p><strong>Nama:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+                            <p><strong>Username:</strong> {{ user.username }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

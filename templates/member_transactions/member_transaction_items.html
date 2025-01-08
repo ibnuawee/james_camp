@@ -1,9 +1,10 @@
 {% extends "layouts2/base.html" %}
+{% load custom_filters %}
 
 {% block title %}Item dari Kategori: {{ category.name }}{% endblock %}
 
 {% block content %}
-<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/static/assets2/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('/static/assets2/images/pemandangan2.jpeg');" data-stellar-background-ratio="0.5">
   <div class="overlay"></div>
   <div class="container">
     <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start">
@@ -17,7 +18,7 @@
           </span>
           <span>{{ category.name }} <i class="ion-ios-arrow-forward"></i></span>
         </p>
-        <h1 class="mb-3 bread">Item dalam Kategori: {{ category.name }}</h1>
+        <h1 class="mb-3 bread">Pilih Item</h1>
       </div>
     </div>
   </div>
@@ -29,15 +30,15 @@
       {% for item in items %}
       <div class="col-md-4">
         <div class="car-wrap rounded ftco-animate">
-          <div class="img rounded d-flex align-items-end" style="background-image: url({{ item.image.url|default:'images/default-item.jpg' }});">
+          <div class="img rounded d-flex align-items-end" style="background-image: url({% if item.image %}{{ item.image.url}}{% else %}images/default-item.jpg{% endif %});">
           </div>
-          <div class="text">
+          <div class="text text-center">
             <h2 class="mb-0"><a href="{% url 'member_transaction_form' item.id %}">{{ item.name }}</a></h2>
-            <div class="d-flex mb-3">
-              <span class="cat">{{ item.category.name }}</span>
-              <p class="price ml-auto">Rp {{ item.price }} <span>/hari</span></p>
+            <div class="mb-3">
+              <p class="price ml-auto text-center">{{ item.price|rupiah }} <span>/hari</span></p>
+                <p class="price ml-auto text-center">stok : {{ item.stock }}</p>
             </div>
-            <p class="d-flex mb-0 d-block">
+            <p class="mb-0 d-block">
               <a href="{% url 'member_transaction_form' item.id %}" class="btn btn-primary py-2 mr-1">Pinjam</a>
             </p>
           </div>

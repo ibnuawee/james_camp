@@ -30,7 +30,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <img src="{{ item.image.url|default:'images/default-item.jpg' }}" alt="{{ item.name }}" class="img-fluid">
+        <img src="{% if item.image %}{{ item.image.url }}{% else %}images/default-item.jpg{% endif %}" alt="{{ item.name }}" class="img-fluid">
       </div>
       <div class="col-md-6">
         <div class="card">

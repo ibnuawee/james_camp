@@ -33,4 +33,7 @@ urlpatterns = [
     path('transactions/', include('transaction.urls')),
     path('member/', include('user_transactions.urls')),
 
+    path('about/', include('content.urls')),
+    path('blog/', include('blog.urls')),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,36 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Daftar Blog{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <div class="section-header-back">
+            <a href="{% url 'blog_list' %}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+        <h1>Detail Blog</h1>
+    </div>
+
+    <div class="section-body">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>{{ blog.title }}</h2>
+                        <p><strong>Kategori:</strong> {{ blog.category.name }}</p>
+                        <p><strong>Oleh:</strong> {{ blog.author.username }} pada {{ blog.upload_date|date:"d M Y" }}</p>
+                        {% if blog.image %}
+                        <img src="{{ blog.image.url }}" class="img-fluid mb-4" alt="{{ blog.title }}">
+                        {% endif %}
+                        <p>{{ blog.content|linebreaks }}</p>
+                        <hr>
+                        <a href="{% url 'blog_update' blog.id %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'blog_delete' blog.id %}" class="btn btn-danger">Hapus</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

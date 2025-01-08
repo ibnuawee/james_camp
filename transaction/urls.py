@@ -11,6 +11,8 @@ urlpatterns = [
     # Edit Transaksi
     path('transactions/<int:pk>/edit/', views.transaction_update, name='transaction_update'),
 
+    path('export-transactions/', views.export_transactions_csv, name='export_transactions_csv'),
+
     path('payment-methods/', views.payment_method_list, name='payment_method_list'),
     path('payment-methods/add/', views.payment_method_create, name='payment_method_create'),
     path('payment-methods/<int:pk>/edit/', views.payment_method_update, name='payment_method_update'),

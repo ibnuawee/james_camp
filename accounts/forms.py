@@ -7,7 +7,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'password', 'confirm_password',]
+        fields = ['first_name','last_name','username', 'email', 'password', 'confirm_password',]
 
     def clean(self):
         cleaned_data = super().clean()
@@ -16,3 +16,8 @@ class UserRegistrationForm(forms.ModelForm):
 
         if password != confirm_password:
             raise forms.ValidationError("Password dan konfirmasi password tidak cocok.")
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'username']

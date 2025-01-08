@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load custom_filters %}
 
 {% block title %}Tambah Alat Camping{% endblock %}
 
@@ -21,7 +22,7 @@
                             <div class="row">
                                 <div class="form-group col-12">
                                     <label for="name">Nama Alat</label>
-                                    <input name="name" type="text" id="name" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" value="{{ form.name.value|default:'' }}">
+                                    <input name="name" type="text" id="name" class="form-control {{ form.name.errors|yesno:'is-invalid,' }}" value="{{ form.name.value|default:''}}">
                                     {% for error in form.name.errors %}
                                         <div class="invalid-feedback">
                                             {{ error }}
@@ -48,7 +49,7 @@
                                 </div>
                                 <div class="form-group col-md-6 col-12">
                                     <label for="price">Harga</label>
-                                    <input name="price" type="number" step="0.01" id="price" class="form-control {{ form.price.errors|yesno:'is-invalid,' }}" value="{{ form.price.value|default:'' }}">
+                                    <input name="price" type="number" step="0.01" id="price" class="form-control {{ form.price.errors|yesno:'is-invalid,' }}" value="{{ form.price.value|default:''}}">
                                     {% for error in form.price.errors %}
                                         <div class="invalid-feedback">
                                             {{ error }}

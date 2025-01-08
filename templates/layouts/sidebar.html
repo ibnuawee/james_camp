@@ -1,54 +1,64 @@
 <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-        <a href="#">JamesCamp</a>
+        <a href="{% url 'home' %}">JamesCamp</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
-        <a href="index.html">St</a>
+        <a href="{% url 'home' %}">St</a>
     </div>
 
     <ul class="sidebar-menu">
         {% block sidebar %}
-        <li class="menu-header">Dashboard</li>
-        <li class="nav-item dropdown">
-            <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
-        </li>
+{#        <li class="menu-header">Dashboard</li>#}
+{#        <li class="nav-item dropdown">#}
+{#            <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>#}
+{#        </li>#}
 
         {% if user.is_admin %}
         <li class="nav-item dropdown">
-            <a href="{% url 'user_list' %}" class="nav-link"><i class="fas fa-users"></i><span>User List</span></a>
-        </li>
-        {% endif %}
-            
-        {% if user.is_admin %}
-        <li class="nav-item dropdown">
-            <a href="{% url 'camping_item_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Item</span></a>
-        </li>
-        {% endif %}
-            
-        {% if user.is_admin %}
-        <li class="nav-item dropdown">
-            <a href="{% url 'category_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Kategori</span></a>
-        </li>
-        {% endif %}
-            
-        {% if user.is_admin %}
-        <li class="nav-item dropdown">
-            <a href="{% url 'transaction_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Transaksi</span></a>
+            <a href="{% url 'user_list' %}" class="nav-link"><i class="ion ion-compose"></i><span>User List</span></a>
         </li>
         {% endif %}
 
         {% if user.is_admin %}
         <li class="nav-item dropdown">
-            <a href="{% url 'payment_method_list' %}" class="nav-link"><i class="fas fa-users"></i><span>Kelola Pembayaran</span></a>
+            <a href="#" class="nav-link has-dropdown"><i class="ion ion-compose"></i><span>Kelola Item</span></a>
+            <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{% url 'camping_item_list' %}">Kelola Item</a></li>
+                <li><a class="nav-link" href="{% url 'category_list' %}">Kelola Kategori</a></li>
+            </ul>
         </li>
         {% endif %}
+            
+        {% if user.is_admin or user.is_staff_user %}
+        <li class="nav-item dropdown">
+            <a href="{% url 'transaction_list' %}" class="nav-link"><i class="ion ion-compose"></i><span>Kelola Transaksi</span></a>
+        </li>
+        {% endif %}
+
+        {% if user.is_admin %}
+        <li class="nav-item dropdown">
+            <a href="{% url 'payment_method_list' %}" class="nav-link"><i class="ion ion-compose"></i><span>Kelola Pembayaran</span></a>
+        </li>
+        {% endif %}
+
+        {% if user.is_admin %}
+        <li class="nav-item dropdown">
+            <a href="{% url 'content_admin' %}" class="nav-link"><i class="ion ion-compose"></i><span>Kelola Content</span></a>
+        </li>
+        {% endif %}
+
+        {% if user.is_admin or user.is_staff_user %}
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link has-dropdown"><i class="ion ion-compose"></i><span>Kelola Blog</span></a>
+            <ul class="dropdown-menu">
+                <li><a class="nav-link" href="{% url 'blog_list' %}">List Blog</a></li>
+                <li><a class="nav-link" href="{% url 'blog_category_list' %}">List Kategori</a></li>
+            </ul>
+        </li>
+        {% endif %}
+
 
         {% endblock %}
     </ul>
 
-    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-        <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-            <i class="fas fa-rocket"></i> Documentation
-        </a>
-    </div>
 </aside>

@@ -13,15 +13,24 @@ class TransactionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.item = kwargs.pop('item', None)
-        super(TransactionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean_quantity(self):
         quantity = self.cleaned_data['quantity']
+        item = self.cleaned_data.get('item')
 
-        if not self.item:
+        if not item:
             raise forms.ValidationError("Item tidak valid atau tidak ditemukan.")
-        if quantity > self.item.stock:
-            raise forms.ValidationError(f"Stok tidak mencukupi. Hanya tersedia {self.item.stock}.")
+
+        if self.instance.pk:
+            original = Transaction.objects.get(pk=self.instance.pk)
+            if original.status == 'pending' and self.cleaned_data.get('status') in ['paid', 'processing']:
+                if quantity > item.stock:
+                    raise forms.ValidationError(f"Stok tidak mencukupi. Hanya tersedia {item.stock}.")
+        else:
+            if quantity > item.stock:
+                raise forms.ValidationError(f"Stok tidak mencukupi. Hanya tersedia {item.stock}.")
+
         return quantity
 
 class PaymentMethodForm(forms.ModelForm):

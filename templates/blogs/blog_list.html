@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}List Blog{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-header">
+        <h1>List Blog</h1>
+        <div class="section-header-button">
+            <a href="{% url 'blog_create' %}" class="btn btn-primary">Buat Konten</a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for blog in blogs %}
+            <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                <article class="article article-style-b">
+                  <div class="article-header">
+                    <div class="article-image" data-background="{% if blog.image %}{{ blog.image.url }}{% else %}/static/images/default-blog.jpg{% endif %}">
+                    </div>
+
+                  </div>
+                  <div class="article-details">
+                    <div class="article-title">
+                      <h2><a href="{% url 'blog_detail' blog.id %}">{{ blog.title }}</a></h2>
+                    </div>
+                    <p>{{ blog.synopsis|truncatewords:20 }}</p>
+                    <div class="article-cta">
+                      <a href="{% url 'blog_detail' blog.id %}">Baca Selengkapnya <i class="fas fa-chevron-right"></i></a>
+                    </div>
+                  </div>
+                </article>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

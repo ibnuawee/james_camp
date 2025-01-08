@@ -1,0 +1,17 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Hapus Kategori{% endblock %}
+
+{% block content %}
+<section class="ftco-section">
+    <div class="container">
+        <h2>Hapus Kategori</h2>
+        <p>Apakah Anda yakin ingin menghapus kategori "<strong>{{ object.name }}</strong>"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Hapus</button>
+            <a href="{% url 'blog_category_list' %}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

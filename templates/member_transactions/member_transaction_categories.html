@@ -26,7 +26,7 @@
       {% for category in categories %}
       <div class="col-md-4">
         <div class="car-wrap rounded ftco-animate">
-          <div class="img rounded d-flex align-items-end" style="background-image: url({{ category.image.url}});">
+          <div class="img rounded d-flex align-items-end" style="background-image: url({% if category.image %}{{ category.image.url}}{% endif %});">
           </div>
           <div class="text text-center">
             <h2 class="mb-0"><a href="{% url 'member_transaction_items' category.id %}">{{ category.name }}</a></h2>
